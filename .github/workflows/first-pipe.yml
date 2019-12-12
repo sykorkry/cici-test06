@@ -1,0 +1,21 @@
+name: Java CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Build with Maven
+      run: mvn -B --file petclinic/pom.xml package
+    - name: Run petclinic
+      run: nohup java -jar petclinic/target/petclinic-2.2.2.BUILD-SNAPSHOT.jar &
+    - name: Run petclinic
+      run: mvn -B --file petclinic-selenium/pom.xml -Dbrowser=chrome -Dheadless=true test
